@@ -123,7 +123,7 @@ jobs:
       - run:
           name: Install tar and gzip
           command: |
-            sudo yum update && sudo yum install -y tar && sudo yum install -y gzip
+            yum update && yum install -y tar && yum install -y gzip
       - run:
           name: Ensure back-end infrastructure exists
           command: |
