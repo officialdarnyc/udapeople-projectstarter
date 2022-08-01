@@ -145,7 +145,7 @@ jobs:
           name: Add the EC2 instance IP to the Ansible inventory
           command: |
             aws cloudformation --region us-east-1 describe-stacks --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --query "Stacks[0].Outputs[?OutputKey=='EC2Url'].OutputValue" --output text > url.txt
+              --query "Stacks[0].Outputs[?OutputKey=='EC2URL'].OutputValue" --output text > url.txt
             cat url.txt >> ./.circleci/ansible/inventory.txt
             cat ./.circleci/ansible/inventory.txt
       - persist_to_workspace:
@@ -166,9 +166,9 @@ jobs:
       - run:
           name: Install Dependencies
           command: |
-            apt update -y
-            apt install tar -y && apt install gzip -y
-            apt install ansible -y && apt install awscli -y
+            apk update
+            apk add --upgrade tar && apk add --upgrade gzip
+            apk add --upgrade ansible
       - run:
           name: Configure server
           command: |
