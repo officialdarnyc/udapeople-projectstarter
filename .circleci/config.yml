@@ -144,8 +144,8 @@ jobs:
       - run: 
           name: Add the EC2 instance IP to the Ansible inventory
           command: |
-            echo "ec2-54-159-191-131.compute-1.amazonaws.com" >> ./ansible/inventory.txt
-            cat ./ansible/inventory.txt
+            echo "ec2-54-159-191-131.compute-1.amazonaws.com" >> ./.circleci/ansible/inventory.txt
+            cat ./.circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: /tmp/workspace
           paths: 
