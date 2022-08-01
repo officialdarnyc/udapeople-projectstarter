@@ -143,11 +143,13 @@ jobs:
       - destroy-environment
       - run: 
           name: Add the EC2 instance IP to the Ansible inventory
-          command: echo "ec2-54-159-191-131.compute-1.amazonaws.com" >> ./.circleci/ansible/inventory.txt
+          command: |
+            echo "ec2-54-159-191-131.compute-1.amazonaws.com" >> ./ansible/inventory.txt
+            cat ./ansible/inventory.txt
       - persist_to_workspace:
-          root: .
+          root: /tmp/workspace
           paths: 
-            - /.circleci/ansible/inventory.txt
+            - ansible/inventory.txt
 
   configure_infrastructure: 
     docker:
@@ -158,7 +160,7 @@ jobs:
           fingerprints:
             - "67:a8:f2:cd:0e:fd:94:ab:2e:b0:db:dd:09:3c:ef:84"
       - attach_workspace:
-          at: ./.circleci/ansible
+          at: /tmp/workspace
       - run:
           name: Install Dependencies
           command: |
@@ -189,4 +191,7 @@ workflows:
           requires:
             - "build-backend"
       - deploy-infrastructure:
-          requires: [test-frontend, test-backend, scan-frontend, scan-backend]                            
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+      - configure-infrastructure:
+          requires:
+            - "deploy-infrastructure"                              
