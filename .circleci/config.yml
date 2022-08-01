@@ -147,9 +147,9 @@ jobs:
             echo "ec2-54-159-191-131.compute-1.amazonaws.com" >> ./.circleci/ansible/inventory.txt
             cat ./.circleci/ansible/inventory.txt
       - persist_to_workspace:
-          root: ~/
+          root: ./
           paths: 
-            - ansible/inventory.txt
+            - .circleci/ansible/inventory.txt
 
   configure-infrastructure: 
     docker:
@@ -160,7 +160,7 @@ jobs:
           fingerprints:
             - "67:a8:f2:cd:0e:fd:94:ab:2e:b0:db:dd:09:3c:ef:84"
       - attach_workspace:
-          at: ~/
+          at: ./
       - run:
           name: Install Dependencies
           command: |
