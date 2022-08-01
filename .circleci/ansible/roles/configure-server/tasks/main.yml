@@ -9,7 +9,8 @@
 - name: "upgrade packages."
   become: true
   yum:
-    upgrade: "yes"   
+    name: '*'
+    state: latest 
 
 - name: "install dependencies."
   become: true
