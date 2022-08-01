@@ -144,7 +144,9 @@ jobs:
       - run: 
           name: Add the EC2 instance IP to the Ansible inventory
           command: |
-            echo "ec2-54-159-191-131.compute-1.amazonaws.com" >> ./.circleci/ansible/inventory.txt
+            aws cloudformation --region us-east-1 describe-stacks --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --query "Stacks[0].Outputs[?OutputKey=='EC2Url'].OutputValue" --output text > url.txt
+            cat url.txt >> ./.circleci/ansible/inventory.txt
             cat ./.circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: ./
@@ -164,9 +166,9 @@ jobs:
       - run:
           name: Install Dependencies
           command: |
-            yum update -y
-            yum install tar -y && yum install gzip -y
-            yum install ansible -y && yum install awscli -y
+            apt update -y
+            apt install tar -y && apt install gzip -y
+            apt install ansible -y && apt install awscli -y
       - run:
           name: Configure server
           command: |
