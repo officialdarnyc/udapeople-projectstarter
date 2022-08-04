@@ -6,7 +6,6 @@
     update_cache: yes   
 
 - name: extract artifact
-  become: true
   unarchive:
     src: artifact.tar.gz
     dest: ~/
