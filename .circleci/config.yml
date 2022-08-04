@@ -14,6 +14,7 @@ commands:
           # ${CIRCLE_WORKFLOW_ID:0:7} takes the first 7 chars of the variable CIRCLE_CI_WORKFLOW_ID          
           when: on_fail          
           command: |
+            aws s3 rm s3://udapeople-<<parameters.workflow_id>> --recursive
             aws cloudformation delete-stack --stack-name udapeople-backend-<<parameters.workflow_id>>
             aws cloudformation delete-stack --stack-name udapeople-frontend-<<parameters.workflow_id>>
 
@@ -208,7 +209,10 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run:
+      - restore_cache:
+          keys:
+            - "backend-build"      
+      - run:          
           name: Run migrations
           command: |
             cd backend
@@ -233,7 +237,7 @@ jobs:
           name: Install dependencies
           command: |
             apk update
-            apk add --update nodejs && apk add --update npm
+            apk add --update --no-cache nodejs npm curl
             apk add --upgrade ansible
             pip3 install awscli
       - run:
